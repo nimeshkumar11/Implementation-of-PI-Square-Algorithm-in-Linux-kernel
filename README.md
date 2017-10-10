@@ -13,3 +13,4 @@ PI2 or PI Square [1] is a simplified implementation of PIE algorithm [2]. It is 
 
 [2] Pan, R., Natarajan, P., Piglione, C., Prabhu, M. S., Subramanian, V., Baker, F., & VerSteeg, B. (2013, July). PIE: A lightweight control scheme to address the bufferbloat problem. In High Performance Switching and Routing (HPSR), 2013 IEEE 14th International Conference on (pp. 148-155). IEEE.
 
+[3] ​http://dl.ifip.org/db/conf/networking/networking2017/1570351289.pdf​ 

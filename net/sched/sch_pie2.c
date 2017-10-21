@@ -353,22 +353,7 @@ static void calculate_probability(struct Qdisc *sch)
 	 * light, medium or high dropping mode.
 	 */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////Auto_tuning of P 
-	if (q->vars.prob < MAX_PROB / 100) {
-		alpha =
-		    (q->params.alpha * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 7;
-		beta =
-		    (q->params.beta * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 7;
-	} else if (q->vars.prob < MAX_PROB / 10) {
-		alpha =
-		    (q->params.alpha * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 5;
-		beta =
-		    (q->params.beta * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 5;
-	} else {
-		alpha =
-		    (q->params.alpha * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 4;
-		beta =
-		    (q->params.beta * (MAX_PROB / PSCHED_TICKS_PER_SEC)) >> 4;
-	}
+	
 //Drop Probability Calc////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* alpha and beta should be between 0 and 32, in multiples of 1/16 */
 	delta += alpha * ((qdelay - q->params.target));

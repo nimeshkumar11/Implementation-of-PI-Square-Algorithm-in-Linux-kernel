@@ -78,8 +78,8 @@ struct pie_sched_data {
 
 static void pie_params_init(struct pie_params *params)
 {
-	params->alpha = 2;
-	params->beta = 20;
+	params->alpha = 0.312;/*according to rohit paper */
+	params->beta = 3.125;/*according to rohit paper*/
 	params->tupdate = usecs_to_jiffies(30 * USEC_PER_MSEC);	/* 30 ms */
 	params->limit = 1000;	/* default of 1000 packets */
 	params->target = PSCHED_NS2TICKS(20 * NSEC_PER_MSEC);	/* 20 ms */
@@ -128,6 +128,7 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 		local_prob = (local_prob / mtu) * packet_size;
 	else
 		local_prob = q->vars.prob;
+	        local_prob*=local_prob;/*change p to p2*/
 
 	rnd = prandom_u32();
 	if (rnd < local_prob)

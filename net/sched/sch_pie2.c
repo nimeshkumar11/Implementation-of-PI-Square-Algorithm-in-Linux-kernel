@@ -102,18 +102,19 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 	u32 local_prob = q->vars.prob;
 	u32 mtu = psched_mtu(qdisc_dev(sch));
 //////////////////////////////////////////////////////////////////////////////////////////Burst Allowance Calculation:If burst allow > 0 enque packet //bypassing random drop;
-
+////////////////////***********************************************************************Burst Allowance Cancel karna hai , As Suggested By Bob Briscoe
 	/* If there is still burst allowance left skip random early drop */
-	if (q->vars.burst_time > 0)
-		return false;
+//	if (q->vars.burst_time > 0)
+//		return false;
 
 	/* If current delay is less than half of target, and
 	 * if drop prob is low already, disable early_drop
 	 */
+	//********************************************************************************Changes made from bob briscoe- Fewer Heuristics point 2
 /////////////////////////////////////////////////////////////////////////////////3. if p = 0; and both cur del and old del less than ref del/2, reset burst allow,
-	if ((q->vars.qdelay < q->params.target / 2)
-	    && (q->vars.prob < MAX_PROB / 5))
-		return false;
+	//if ((q->vars.qdelay < q->params.target / 2)
+	  //  && (q->vars.prob < MAX_PROB / 5))
+		//return false;
 
 	/* If we have fewer than 2 mtu-sized packets, disable drop_early,
 	 * similar to min_th in RED
@@ -128,8 +129,8 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 		local_prob = (local_prob / mtu) * packet_size;
 	else
 		local_prob = q->vars.prob;
-	        local_prob*=local_prob;/*change p to p2*/
 
+	local_prob*=local_prob;/*change p to p2*/
 	rnd = prandom_u32();
 	if (rnd < local_prob)
 		return true;
@@ -158,7 +159,7 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		q->stats.ecn_mark++;
 		enqueue = true;
 	}
-
+///////The thirdpoint of fewer Heuristics from Bob Briscoe is above i kno how to disable it .. but i dont know What Further to do.
 	/* we can enqueue the packet */
 	if (enqueue) {
 		q->stats.packets_in++;
@@ -353,8 +354,8 @@ static void calculate_probability(struct Qdisc *sch)
 	 * We scale alpha and beta differently depending on whether we are in
 	 * light, medium or high dropping mode.
 	 */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////Auto_tuning of P 
-	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////Auto_tuning of P (This need to be Deleted)
+//******************************************************************************************************Deleted Alpha beta Scaling
 //Drop Probability Calc////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/* alpha and beta should be between 0 and 32, in multiples of 1/16 */
 	delta += alpha * ((qdelay - q->params.target));
@@ -374,7 +375,7 @@ static void calculate_probability(struct Qdisc *sch)
 
 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
 		delta += MAX_PROB / (100 / 2);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////This is what we need to change
+////////////////////////////////////////////////////////////////////////////////////////////////////This is what we need to change as suggested by Bob Briscoe , he was taking some variable p' and squaring it , I am confused about this
 	q->vars.prob += delta;
 q->vars.prob *=q->vars.prob ;//////////////////////////////////////////////////////////////////////////////////////////////
 	if (delta > 0) {
@@ -561,3 +562,4 @@ MODULE_DESCRIPTION("Proportional Integral controller Enhanced (PIE) scheduler");
 MODULE_AUTHOR("Vijay Subramanian");
 MODULE_AUTHOR("Mythili Prabhu");
 MODULE_LICENSE("GPL");
+

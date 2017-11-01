@@ -257,9 +257,9 @@ static void pie_process_dequeue(struct Qdisc *sch, struct sk_buff *skb)
 	 * we have enough packets to calculate the drain rate. Save
 	 * current time as dq_tstamp and start measurement cycle.
 	 */
-//////////////////////////////////////////////////////////////////////////////////////////////////////If the above is true, update departure count dq //count:
+//////////////////////////////////////////////////////////////////////////////////////////////////////If the above is true, update departure count dq //count:	dqcount = dq_count + dq_pktsize;
 
-	dq count = dq count + dq pktsize;
+
 	if (qlen >= QUEUE_THRESHOLD && q->vars.dq_count == DQCOUNT_INVALID) {
 		q->vars.dq_tstamp = psched_get_time();
 		q->vars.dq_count = 0;
@@ -329,6 +329,8 @@ static void calculate_probability(struct Qdisc *sch)
 	u32 oldprob;
 	u32 alpha, beta;
 	bool update_prob = true;
+	alpha = q->params.alpha;
+	beta = q->params.beta ;
 ///////////////////////////////////////////////old_del = curr_del////////////////////////////////////////////////////////////////////////////
 	q->vars.qdelay_old = q->vars.qdelay;
 //Drop Probability Calculation -a.Cur_del //////////////////////////////////////////////////////////////////////////////////////////////////////

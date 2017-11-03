@@ -5,7 +5,7 @@
 ## Assignment: #FP5
 
 ### Overview
-PI2 or PI Square [1] is a simplified implementation of PIE algorithm [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
+PI2 or PISquare [1] is a simplified implementation of PIE algorithm [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
 
 ### Steps to build the modified kernel with MADPIE algorithm
 
@@ -41,13 +41,13 @@ PI2 or PI Square [1] is a simplified implementation of PIE algorithm [2]. It is 
 
    4. Install Flent in client machine
 
-   5. Install the modified kernel with MADPIE algorithm in router machine
+   5. Install the modified kernel with PIESQUARE algorithm in router machine
 
    6. Run Flent for plotting different graphs
 
 ### Syntax of the command to run Flent
 
-./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t MADPIE -o ~/Desktop/PIESQUARE/test.png
+./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESQUARE/test.png
 
 PLOT_NAME - The type of graph needed
 
@@ -56,11 +56,10 @@ SERVER_IP - IP Address of the server
 ROUTER_SSH_IP - IP Address using which ssh connection is setup with router
 
 ROUTER_AQM_INTERFACE - Interface name of the router where AQM is installed
-Example command to run Flent
 
-./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t MADPIE -o ~/Desktop/MADPIE/test.png
+### Example command to run Flent
 
-
+./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESUARE/test.png
 
 ### References
 

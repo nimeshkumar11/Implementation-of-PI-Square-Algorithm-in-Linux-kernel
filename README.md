@@ -7,6 +7,61 @@
 ### Overview
 PI2 or PI Square [1] is a simplified implementation of PIE algorithm [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
 
+### Steps to build the modified kernel with MADPIE algorithm
+
+  1.  Download or clone this repository on your local machine
+
+  2.  Configure the kernel
+
+  3.  make menuconfig
+
+  4.  Compile the kernel
+
+  5.  make
+
+  6.  Build and install the modules
+
+  7.  make modules
+
+  8.  make modules_install
+
+  9.  Install the kernel
+
+  10. make install
+
+### Steps to test the functionality of PIESQUARE AQM by using Flexible Network Tester (Flent) [4]
+
+   1. Setup a physical topology of three nodes:
+
+      Client <---> Router <---> Server
+
+   2. Create a separate passwordless SSH connection between client and router machines, so that Flent can collect queue statistics from the router machine
+
+   3. Install Netserver in server machine
+
+   4. Install Flent in client machine
+
+   5. Install the modified kernel with MADPIE algorithm in router machine
+
+   6. Run Flent for plotting different graphs
+
+### Syntax of the command to run Flent
+
+./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t MADPIE -o ~/Desktop/PIESQUARE/test.png
+
+PLOT_NAME - The type of graph needed
+
+SERVER_IP - IP Address of the server
+
+ROUTER_SSH_IP - IP Address using which ssh connection is setup with router
+
+ROUTER_AQM_INTERFACE - Interface name of the router where AQM is installed
+Example command to run Flent
+
+./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t MADPIE -o ~/Desktop/MADPIE/test.png
+
+
+
 ### References
 
 [1] De Schepper, K., Bondarenko, O., Tsang, I. J., & Briscoe, B. (2016, November). PI2: A Linearized AQM for both Classic and Scalable TCP. In CoNEXT (pp. 105-119).
@@ -14,3 +69,5 @@ PI2 or PI Square [1] is a simplified implementation of PIE algorithm [2]. It is 
 [2] Pan, R., Natarajan, P., Piglione, C., Prabhu, M. S., Subramanian, V., Baker, F., & VerSteeg, B. (2013, July). PIE: A lightweight control scheme to address the bufferbloat problem. In High Performance Switching and Routing (HPSR), 2013 IEEE 14th International Conference on (pp. 148-155). IEEE.
 
 [3] ​http://dl.ifip.org/db/conf/networking/networking2017/1570351289.pdf​ 
+
+[4] Flent: The FLExible Network Tester (https://flent.org/)

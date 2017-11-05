@@ -92,7 +92,8 @@ static void pie_vars_init(struct pie_vars *vars)
 	vars->dq_count = DQCOUNT_INVALID;
 	vars->avg_dq_rate = 0;
 	/* default of 100 ms in pschedtime */
-	vars->burst_time = PSCHED_NS2TICKS(100 * NSEC_PER_MSEC);
+	// KDS: disabled burst allowance (too slow for low latency DataCenter access)
+	//vars->burst_time = PSCHED_NS2TICKS(100 * NSEC_PER_MSEC);
 }
 
 static bool drop_early(struct Qdisc *sch, u32 packet_size)
@@ -103,7 +104,10 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 	u32 mtu = psched_mtu(qdisc_dev(sch));
 	if (sch->qstats.backlog < 2 * mtu)
 		return false;
-
+	/* If there is still burst allowance left skip random early drop */
+	if (q->vars.burst_time > 0)
+		return false;
+	
 	/* If bytemode is turned on, use packet size to compute new
 	 * probablity. Smaller packets will have lower drop prob in this case
 	 */

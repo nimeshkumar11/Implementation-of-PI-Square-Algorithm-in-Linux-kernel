@@ -1,4 +1,4 @@
-/* Copyright (C) 2013 Cisco Systems, Inc, 2013.
+/* Copyright (C) 2015 Alcatel-Lucent.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -10,18 +10,26 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  *
+ * Author: Koen De Schepper <koen.de_schepper@alcatel-lucent.com>
+ * Author: Olga Bondarenko <olgabo@simula.no>
+ *
+ * PI Improved with a Square (PI2)
+ * Supports controlling scalable congestion controls (DCTCP, etc...)
+ * Supports DualQ with PI2
+ * Supports L4S ECN identifier
+ *
+ * Based on the PIE implementation:
+ * Copyright (C) 2013 Cisco Systems, Inc, 2013.
  * Author: Vijay Subramanian <vijaynsu@cisco.com>
  * Author: Mythili Prabhu <mysuryan@cisco.com>
- *
  * ECN support is added by Naeem Khademi <naeemk@ifi.uio.no>
  * University of Oslo, Norway.
- *
  * References:
+ * "PI²: PI Improved with a Square to support Scalable Congestion Controllers"
  * IETF draft submission: http://tools.ietf.org/html/draft-pan-aqm-pie-00
  * IEEE  Conference on High Performance Switching and Routing 2013 :
  * "PIE: A * Lightweight Control Scheme to Address the Bufferbloat Problem"
  */
-
 #include <linux/module.h>
 #include <linux/slab.h>
 #include <linux/types.h>
@@ -530,8 +538,9 @@ static void __exit pie_module_exit(void)
 module_init(pie_module_init);
 module_exit(pie_module_exit);
 
-MODULE_DESCRIPTION("Proportional Integral controller Enhanced (PIE) scheduler");
+MODULE_DESCRIPTION("Proportional Integral controller Improved with a Square (PI2) scheduler");
+MODULE_AUTHOR("Koen De Schepper");
+MODULE_AUTHOR("Olga Bondarenko");
 MODULE_AUTHOR("Vijay Subramanian");
 MODULE_AUTHOR("Mythili Prabhu");
 MODULE_LICENSE("GPL");
-

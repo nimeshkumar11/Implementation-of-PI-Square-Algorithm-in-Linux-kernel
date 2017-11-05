@@ -54,7 +54,7 @@ struct pie_vars {
 	psched_time_t qdelay;
 	psched_time_t qdelay_old;
 	u64 dq_count;		/* measured in bytes */
-	psched_time_t dq_tstamp;	/* drain rate */
+	psched_time_t dq_tstamp;/* drain rate */
 	u32 avg_dq_rate;	/* bytes per pschedtime tick,scaled */
 	u32 qlen_old;		/* in bytes */
 };
@@ -78,8 +78,8 @@ struct pie_sched_data {
 
 static void pie_params_init(struct pie_params *params)
 {
-	params->alpha = 0.312;		/*initial value of alpha acc to rohit sir paper */
-	params->beta = 3.125;		/*initial value of beta acc to rohit sir paper*/
+	params->alpha = 0.312;		/* initial value of alpha acc to rohit sir paper */
+	params->beta = 3.125;		/* initial value of beta acc to rohit sir paper */
 	params->tupdate = usecs_to_jiffies(30 * USEC_PER_MSEC);	/* 30 ms */
 	params->limit = 1000;		/* default of 1000 packets */
 	params->target = PSCHED_NS2TICKS(20 * NSEC_PER_MSEC);	/* 20 ms */
@@ -101,25 +101,6 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 	u32 rnd;
 	u32 local_prob = q->vars.prob;
 	u32 mtu = psched_mtu(qdisc_dev(sch));
-	/* Burst Allowance Calculation:If burst allow > 0 enque packet //bypassing random drop;*/
-	/* Burst Allowance is disabled , As Suggested By Bob Briscoe
-	 *  If there is still burst allowance left skip random early drop */
-//	if (q->vars.burst_time > 0)
-//		return false;
-
-	/* If current delay is less than half of target, and
-	 * if drop prob is low already, disable early_drop
-	 */
-	/* Changes made from bob briscoe- Fewer Heuristics point 2 
-	 */
-	/* if p = 0; and both cur del and old del less than ref del/2, reset burst allow,*/
-	//if ((q->vars.qdelay < q->params.target / 2)
-	//    && (q->vars.prob < MAX_PROB / 5))
-	//		return false;
-
-	/* If we have fewer than 2 mtu-sized packets, disable drop_early,
-	 * similar to min_th in RED
-	 */
 	if (sch->qstats.backlog < 2 * mtu)
 		return false;
 
@@ -131,7 +112,7 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 	else
 		local_prob = q->vars.prob;
 
-	local_prob*=local_prob;/*change p to p2*/
+	local_prob*=local_prob;/* change p to p2 */
 	rnd = prandom_u32();
 	if (rnd < local_prob)
 		return true;
@@ -345,18 +326,6 @@ static void calculate_probability(struct Qdisc *sch)
 	if (qdelay == 0 && qlen != 0)
 		update_prob = false;
 
-	/* In the algorithm, alpha and beta are between 0 and 2 with typical
-	 * value for alpha as 0.125. In this implementation, we use values 0-32
-	 * passed from user space to represent this. Also, alpha and beta have
-	 * unit of HZ and need to be scaled before they can used to update
-	 * probability. alpha/beta are updated locally below by 1) scaling them
-	 * appropriately 2) scaling down by 16 to come to 0-2 range.
-	 * Please see paper for details.
-	 *
-	 * We scale alpha and beta differently depending on whether we are in
-	 * light, medium or high dropping mode.
-	 */
-	/* Deleted Alpha beta Scaling */
 	/* Drop Probability Calc */
 	delta += alpha * ((qdelay - q->params.target));
 	delta += beta * ((qdelay - qdelay_old));

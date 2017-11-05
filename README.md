@@ -5,9 +5,9 @@
 ## Assignment: #FP5
 
 ### Overview
-PI2 or PISquare [1] is a simplified implementation of PIE algorithm [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
+PI2 or PISquare [1] is a simplified implementation of PIE AQM [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
 
-### Steps to build the modified kernel with MADPIE algorithm
+### Steps to build the modified kernel with PISquare AQM
 
   1.  Download or clone this repository on your local machine
 
@@ -41,7 +41,7 @@ PI2 or PISquare [1] is a simplified implementation of PIE algorithm [2]. It is e
 
    4. Install Flent in client machine
 
-   5. Install the modified kernel with PIESQUARE algorithm in router machine
+   5. Install the modified kernel with PISQUARE algorithm in router machine
 
    6. Run Flent for plotting different graphs
 

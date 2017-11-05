@@ -1,4 +1,4 @@
-# Implementation of PI2 algorithm in Linux kernel
+# Implementation of PISQUARE algorithm in Linux kernel
 
 ## Course Code: CS822
 
@@ -47,7 +47,7 @@ PI2 or PISQUARE [1] is a simplified implementation of PIE AQM [2]. It is expecte
 
 ### Syntax of the command to run Flent
 
-`./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESQUARE/test.png`
+`./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PISQUARE -o ~/Desktop/PISQUARE/test.png`
 
 PLOT_NAME - The type of graph needed
 
@@ -59,7 +59,7 @@ ROUTER_AQM_INTERFACE - Interface name of the router where AQM is installed
 
 ### Example command to run Flent
 
-`./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESUARE/test.png`
+`./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PISQUARE -o ~/Desktop/PISQUARE/test.png`
 
 ### References
 

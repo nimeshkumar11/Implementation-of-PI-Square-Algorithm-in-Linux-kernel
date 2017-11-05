@@ -5,9 +5,9 @@
 ## Assignment: #FP5
 
 ### Overview
-PI2 or PISquare [1] is a simplified implementation of PIE AQM [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PI2 in the Linux kernel.
+PI2 or PISQUARE [1] is a simplified implementation of PIE AQM [2]. It is expected to perform similar to PIE (or sometimes better). This repository contains an implementation of PISQUARE in the Linux kernel.
 
-### Steps to build the modified kernel with PISquare AQM
+### Steps to build the modified kernel with PISQUARE AQM
 
 1. Download or clone this repository on your local machine
 
@@ -29,7 +29,7 @@ PI2 or PISquare [1] is a simplified implementation of PIE AQM [2]. It is expecte
 
    `make install`
 
-### Steps to test the functionality of PIESQUARE AQM by using Flexible Network Tester (Flent) [4]
+### Steps to test the functionality of PISQUARE AQM by using Flexible Network Tester (Flent) [3]
 
    1. Setup a physical topology of three nodes:
 
@@ -67,6 +67,4 @@ ROUTER_AQM_INTERFACE - Interface name of the router where AQM is installed
 
 [2] Pan, R., Natarajan, P., Piglione, C., Prabhu, M. S., Subramanian, V., Baker, F., & VerSteeg, B. (2013, July). PIE: A lightweight control scheme to address the bufferbloat problem. In High Performance Switching and Routing (HPSR), 2013 IEEE 14th International Conference on (pp. 148-155). IEEE.
 
-[3] ​http://dl.ifip.org/db/conf/networking/networking2017/1570351289.pdf​ 
-
-[4] Flent: The FLExible Network Tester (https://flent.org/)
+[3] Flent: The FLExible Network Tester (https://flent.org/)

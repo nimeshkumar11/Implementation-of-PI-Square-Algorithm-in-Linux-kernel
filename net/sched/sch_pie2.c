@@ -78,10 +78,10 @@ struct pie_sched_data {
 
 static void pie_params_init(struct pie_params *params)
 {
-	params->alpha = 0.312;/*according to rohit paper */
-	params->beta = 3.125;/*according to rohit paper*/
+	params->alpha = 0.312;		/*initial value of alpha acc to rohit sir paper */
+	params->beta = 3.125;		/*initial value of beta acc to rohit sir paper*/
 	params->tupdate = usecs_to_jiffies(30 * USEC_PER_MSEC);	/* 30 ms */
-	params->limit = 1000;	/* default of 1000 packets */
+	params->limit = 1000;		/* default of 1000 packets */
 	params->target = PSCHED_NS2TICKS(20 * NSEC_PER_MSEC);	/* 20 ms */
 	params->ecn = false;
 	params->bytemode = false;
@@ -101,20 +101,21 @@ static bool drop_early(struct Qdisc *sch, u32 packet_size)
 	u32 rnd;
 	u32 local_prob = q->vars.prob;
 	u32 mtu = psched_mtu(qdisc_dev(sch));
-//////////////////////////////////////////////////////////////////////////////////////////Burst Allowance Calculation:If burst allow > 0 enque packet //bypassing random drop;
-////////////////////***********************************************************************Burst Allowance Cancel karna hai , As Suggested By Bob Briscoe
-	/* If there is still burst allowance left skip random early drop */
+	/* Burst Allowance Calculation:If burst allow > 0 enque packet //bypassing random drop;*/
+	/* Burst Allowance is disabled , As Suggested By Bob Briscoe
+	 *  If there is still burst allowance left skip random early drop */
 //	if (q->vars.burst_time > 0)
 //		return false;
 
 	/* If current delay is less than half of target, and
 	 * if drop prob is low already, disable early_drop
 	 */
-	//********************************************************************************Changes made from bob briscoe- Fewer Heuristics point 2
-/////////////////////////////////////////////////////////////////////////////////3. if p = 0; and both cur del and old del less than ref del/2, reset burst allow,
+	/* Changes made from bob briscoe- Fewer Heuristics point 2 
+	 */
+	/* if p = 0; and both cur del and old del less than ref del/2, reset burst allow,*/
 	//if ((q->vars.qdelay < q->params.target / 2)
-	  //  && (q->vars.prob < MAX_PROB / 5))
-		//return false;
+	//    && (q->vars.prob < MAX_PROB / 5))
+	//		return false;
 
 	/* If we have fewer than 2 mtu-sized packets, disable drop_early,
 	 * similar to min_th in RED
@@ -159,7 +160,6 @@ static int pie_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
 		q->stats.ecn_mark++;
 		enqueue = true;
 	}
-///////The thirdpoint of fewer Heuristics from Bob Briscoe is above i kno how to disable it .. but i dont know What Further to do.
 	/* we can enqueue the packet */
 	if (enqueue) {
 		q->stats.packets_in++;
@@ -257,7 +257,7 @@ static void pie_process_dequeue(struct Qdisc *sch, struct sk_buff *skb)
 	 * we have enough packets to calculate the drain rate. Save
 	 * current time as dq_tstamp and start measurement cycle.
 	 */
-//////////////////////////////////////////////////////////////////////////////////////////////////////If the above is true, update departure count dq //count:	dqcount = dq_count + dq_pktsize;
+	/* If the above is true, update departure count dq //count:dqcount = dq_count + dq_pktsize;*/
 
 
 	if (qlen >= QUEUE_THRESHOLD && q->vars.dq_count == DQCOUNT_INVALID) {
@@ -275,10 +275,10 @@ static void pie_process_dequeue(struct Qdisc *sch, struct sk_buff *skb)
 	 * bytes/psched_time.
 	 */
 
-/////////////////////////////////////////////////////////////////////////////////////////////C. Departure Rate Estimation////////////////
+	/* Departure Rate Estimation */
 	if (q->vars.dq_count != DQCOUNT_INVALID) {
 		q->vars.dq_count += skb->len;
-////////////////////////////////////////////////////////////////////////////////////////////Decide to be in a measurement cycle if:qlen > dq threshold;
+	/* Decide to be in a measurement cycle if:qlen > dq threshold; */
 		if (q->vars.dq_count >= QUEUE_THRESHOLD) {
 			psched_time_t now = psched_get_time();
 			u32 dtime = now - q->vars.dq_tstamp;
@@ -288,7 +288,7 @@ static void pie_process_dequeue(struct Qdisc *sch, struct sk_buff *skb)
 				return;
 
 			count = count / dtime;
-///////////////////////////////////////////////////////////////////////////// avg drate =(1 − ε) ∗ avg drate + ε ∗ dq rate//////////////
+			/* avg drate =(1 − ε) ∗ avg drate + ε ∗ dq rate */
 			if (q->vars.avg_dq_rate == 0)
 				q->vars.avg_dq_rate = count;
 			else
@@ -307,8 +307,8 @@ static void pie_process_dequeue(struct Qdisc *sch, struct sk_buff *skb)
 				q->vars.dq_count = 0;
 				q->vars.dq_tstamp = psched_get_time();
 			}
-/////////////////////////////////////////////////////////////////////////////////Burst Allowance Calculation:///////Upon dq rate update 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////2. Update burst allowance:
+			/* Burst Allowance Calculation:Upon dq rate update */
+			/* Update burst allowance: */
 			if (q->vars.burst_time > 0) {
 				if (q->vars.burst_time > dtime)
 					q->vars.burst_time -= dtime;
@@ -331,9 +331,9 @@ static void calculate_probability(struct Qdisc *sch)
 	bool update_prob = true;
 	alpha = q->params.alpha;
 	beta = q->params.beta ;
-///////////////////////////////////////////////old_del = curr_del////////////////////////////////////////////////////////////////////////////
+	/* old_del = curr_del */
 	q->vars.qdelay_old = q->vars.qdelay;
-//Drop Probability Calculation -a.Cur_del //////////////////////////////////////////////////////////////////////////////////////////////////////
+	/* Drop Probability Calculation */
 	if (q->vars.avg_dq_rate > 0)
 		qdelay = (qlen << PIE_SCALE) / q->vars.avg_dq_rate;
 	else
@@ -356,10 +356,8 @@ static void calculate_probability(struct Qdisc *sch)
 	 * We scale alpha and beta differently depending on whether we are in
 	 * light, medium or high dropping mode.
 	 */
-///////////////////////////////////////////////////////////////////////////////////////////////////////////Auto_tuning of P (This need to be Deleted)
-//******************************************************************************************************Deleted Alpha beta Scaling
-//Drop Probability Calc////////////////////////////////////////////////////////////////////////////////////////////////////////
-	/* alpha and beta should be between 0 and 32, in multiples of 1/16 */
+	/* Deleted Alpha beta Scaling */
+	/* Drop Probability Calc */
 	delta += alpha * ((qdelay - q->params.target));
 	delta += beta * ((qdelay - qdelay_old));
 
@@ -377,9 +375,8 @@ static void calculate_probability(struct Qdisc *sch)
 
 	if (qdelay > (PSCHED_NS2TICKS(250 * NSEC_PER_MSEC)))
 		delta += MAX_PROB / (100 / 2);
-////////////////////////////////////////////////////////////////////////////////////////////////////This is what we need to change as suggested by Bob Briscoe , he was taking some variable p' and squaring it , I am confused about this
 	q->vars.prob += delta;
-q->vars.prob *=q->vars.prob ;//////////////////////////////////////////////////////////////////////////////////////////////
+	q->vars.prob *=q->vars.prob ;
 	if (delta > 0) {
 		/* prevent overflow */
 		if (q->vars.prob < oldprob) {

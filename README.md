@@ -9,25 +9,25 @@ PI2 or PISquare [1] is a simplified implementation of PIE AQM [2]. It is expecte
 
 ### Steps to build the modified kernel with PISquare AQM
 
-  1.  Download or clone this repository on your local machine
+1. Download or clone this repository on your local machine
 
-  2.  Configure the kernel
+2. Configure the kernel
 
-  3.  make menuconfig
+   `make menuconfig`
 
-  4.  Compile the kernel
+3. Compile the kernel
 
-  5.  make
+   `make`
 
-  6.  Build and install the modules
+4. Build and install the modules
 
-  7.  make modules
+   `make modules`
 
-  8.  make modules_install
+   `make modules_install`
 
-  9.  Install the kernel
+5. Install the kernel
 
-  10. make install
+   `make install`
 
 ### Steps to test the functionality of PIESQUARE AQM by using Flexible Network Tester (Flent) [4]
 
@@ -47,7 +47,7 @@ PI2 or PISquare [1] is a simplified implementation of PIE AQM [2]. It is expecte
 
 ### Syntax of the command to run Flent
 
-./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESQUARE/test.png
+`./run-flent rrul -p [PLOT_NAME] -l 160 -H [SERVER_IP] --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=[ROUTER_SSH_IP] --test-parameter qdisc_stats_interfaces=[ROUTER_AQM_INTERFACE] --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESQUARE/test.png`
 
 PLOT_NAME - The type of graph needed
 
@@ -59,7 +59,7 @@ ROUTER_AQM_INTERFACE - Interface name of the router where AQM is installed
 
 ### Example command to run Flent
 
-./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESUARE/test.png
+`./run-flent rrul -p all_scaled -l 160 -H 172.16.10.2 --test-parameter bandwidth=800M --test-parameter qdisc_stats_hosts=192.168.20.2 --test-parameter qdisc_stats_interfaces=eth1 --test-parameter upload_streams=num_cpus --test-parameter download_streams=num_cpus -t PIESQUARE -o ~/Desktop/PIESUARE/test.png`
 
 ### References
 
